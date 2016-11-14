@@ -32,12 +32,13 @@ module.exports = {
  * @param {String} File
  * @returns {Object} containing origin and path
  * @example
+var fsIn = require('fs-inheritance-lib')
 config = {
   inheritFrom: ['../parent', '../neighbour', '../../ancestor'],
   root: 'foo/bar/src'
 }
 files = 'file.js'
-findSingleFile(cfg, files)
+fsIn.findSingleFile(cfg, files)
 // returns an Object like this, depending on where the file was found
 // local means found in current working directory
 // result = {
@@ -87,12 +88,13 @@ function findSingleFile (cfg, file) {
 /**
  * This Function returns an array of matching paths for one given pattern
  * @example
+ * var fsIn = require('fs-inheritance-lib')
  * cfg = {
   inheritFrom: ['../parent', '../neighbour', '../../ancestor'],
   root: 'foo/bar/baz'
 }
 paths = ['client-vars']
-findSingleFile(conig, paths[1])
+fsIn.findSingleFile(conig, paths[1])
 // result = [
 //   '../parent/foo/bar/baz/client-vars',
 //   '../neighbour/foo/bar/baz/client-vars'
@@ -136,6 +138,7 @@ function findSinglePath (cfg, fpath) {
  * @returns {Array} of files found by given patterns
  *
  * @example
+ * var fsIn = require('fs-inheritance-lib')
 config = {
   inheritFrom: ['../parent', '../neighbour', '../../ancestor'],
   root: 'foo/bar/src/'
@@ -148,7 +151,7 @@ files = [
   'file.js',
   'file4.js'
 ]
-findSingleFile(cfg, files)
+fsIn.findSingleFile(cfg, files)
 // returns an Object like this, depending on where the file was found
 // local means found in current working directory
 // result = [
@@ -197,6 +200,7 @@ function findFiles (cfg, files) {
  * the folders to be searched in.
  * First appearance in first inheritance is taken
  * @example
+ * var fsIn = require('fs-inheritance-lib')
 config = {
   inheritFrom: ['../parent', '../neighbour', '../../ancestor'],
   root: 'foo/bar/src/'
@@ -209,7 +213,7 @@ paths = [
   'module',
   'additional'
 ]
-fsInheritanceLib.findPaths(config, paths)
+fsIn.fsInheritanceLib.findPaths(config, paths)
 // result = [
 //  '../parent/foo/bar/src/client-vars',
 //  '../neighbour/foo/bar/src/client-vars',
@@ -242,15 +246,16 @@ function findPaths (cfg, paths) {
 /**
  * find patterns that include * wildcards
  * @example
+ * var fsIn = require('fs-inheritance-lib')
  * config = {
     inheritFrom: ['../parent', '../neighbour', '../../ancestor'],
     root: 'foo/bar/src',
     loglevel: []
   }
   files = [
-    '**&#92;*.js''
+    '** /*.js'' // i had to put the sapce before the backslash because of jsdoc issues 
   ]
-  fsInheritanceLib.findGlobPatterns(config, files[0])
+  fsIn.fsInheritanceLib.findGlobPatterns(config, files[0])
   result = [
     'foo/bar/src/file.js',
     'foo/bar/src/file4.js',

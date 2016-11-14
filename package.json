@@ -17,8 +17,15 @@
     "glob",
     "inheritance"
   ],
+   "repository": {
+    "type": "git",
+    "url": "https://github.com/juicyarts/fs-inheritance-lib"
+  },
+  "bugs": {
+    "url": "https://github.com/juicyarts/fs-inheritance-lib/issues"
+  },
   "author": "Huess Yil <huess@juicyarts.de> (https://github.com/juicyarts)",
-  "license": "ISC",
+  "license": {"tpye":"MIT", "url":""},
   "devDependencies": {
     "chai": "^3.5.0",
     "jsdoc-to-markdown": "^2.0.1",
