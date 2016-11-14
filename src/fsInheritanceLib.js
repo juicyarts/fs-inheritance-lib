@@ -246,14 +246,14 @@ function findPaths (cfg, paths) {
 /**
  * find patterns that include * wildcards
  * @example
-var fsIn = require('fs-inheritance-lib')
+ * var fsIn = require('fs-inheritance-lib')
 config = {
     inheritFrom: ['../parent', '../neighbour', '../../ancestor'],
     root: 'foo/bar/src',
     loglevel: []
   }
   files = [
-    '** /*.js'' // i had to put the sapce before the backslash because of jsdoc issues 
+    '** /*.js' // i had to put the sapce before the backslash because of jsdoc issues 
   ]
   fsIn.fsInheritanceLib.findGlobPatterns(config, files[0])
   result = [

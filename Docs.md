@@ -193,7 +193,7 @@ config = {
     loglevel: []
   }
   files = [
-    '** /*.js'' // i had to put the sapce before the backslash because of jsdoc issues 
+    '** /*.js' // i had to put the sapce before the backslash because of jsdoc issues 
   ]
   fsIn.fsInheritanceLib.findGlobPatterns(config, files[0])
   result = [
