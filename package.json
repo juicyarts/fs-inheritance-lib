@@ -1,0 +1,19 @@
+{
+  "name": "fs-inheritance-lib",
+  "version": "1.0.0",
+  "description": "an inheritance library with fs and glob",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "fs",
+    "glob",
+    "inheritance"
+  ],
+  "author": "Huess Yil <huess@juicyarts.de> (http://www.juicyarts.de)",
+  "license": "ISC"
+}
