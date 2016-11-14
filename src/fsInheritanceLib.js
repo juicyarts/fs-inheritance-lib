@@ -165,7 +165,7 @@ fsIn.findSingleFile(cfg, files)
  *
  */
 function findFiles (cfg, files) {
-  var file = ''
+  var file = false
   var result = []
   for (var f = 0; f < files.length; f++) {
     if (cfg.getFileByRegEx || files[f].match(/\*/)) {
@@ -177,14 +177,16 @@ function findFiles (cfg, files) {
       }
     } else {
       if (cfg.removePatternFromFileName !== undefined && findSingleFile(cfg, files[f]).path.match(cfg.removePatternFromFileName)) {
-        file = findSingleFile(cfg, files[f]).path.replace(cfg.removePatternFromFileName, '')
+        file = findSingleFile(cfg, files[f]) ? findSingleFile(cfg, files[f]).path.replace(cfg.removePatternFromFileName, '') : false
       } else {
-        file = findSingleFile(cfg, files[f]).path
+        file = findSingleFile(cfg, files[f]) ? findSingleFile(cfg, files[f]).path : false
       }
-      if (cfg.removePath) {
-        file = file.split('/').pop()
+      if (file) {
+        if (cfg.removePath) {
+          file = file.split('/').pop()
+        }
+        result.push(file)
       }
-      result.push(file)
     }
   }
 
@@ -253,7 +255,7 @@ config = {
     loglevel: []
   }
   files = [
-    '** /*.js' // i had to put the sapce before the backslash because of jsdoc issues 
+    '** /*.js' // i had to put the sapce before the backslash because of jsdoc issues
   ]
   fsIn.fsInheritanceLib.findGlobPatterns(config, files[0])
   result = [
