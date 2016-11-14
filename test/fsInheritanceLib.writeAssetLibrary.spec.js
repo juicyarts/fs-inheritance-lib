@@ -1,38 +1,15 @@
-import chai from 'chai'
-import sinonChai from 'sinon-chai'
-import chaiFs from 'chai-fs'
-import sinon from 'sinon'
-import path from 'path'
-import spies from 'chai-spies'
-import mockFs from 'mock-fs'
-import fs from 'fs'
+var chai = require('chai')
+var mockFs = require('mock-fs')
+var fs = require('fs')
 
-chai.use(chaiFs)
-chai.use(sinonChai)
-chai.use(spies)
+var expect = chai.expect
+var result
 
-let expect = chai.expect
-let files, config, result, paths
-
-import * as assetLib from '../../lib/common/assets'
-import * as logger from '../../lib/logger'
+var fsInheritanceLib = require('../src/fsInheritanceLib')
 
 describe('wal - writeAssetLibrary', () => {
-  beforeEach(() => {
-    logger.configure({
-      levels: [],
-      selectors: ['mocha', 'test']
-    })
-  })
-   describe('wal - writeAssetLibrary', () => {
+  describe('wal - writeAssetLibrary', () => {
     before(() => {
-      config = {
-        inheritFrom: ['../parent', '../neighbour', '../../ancestor'],
-        root: 'foo/bar/src'
-      }
-      files = [
-        '*.js'
-      ]
       result = [
         'foo/bar/src/file.js',
         'foo/bar/src/file4.js',
@@ -45,7 +22,7 @@ describe('wal - writeAssetLibrary', () => {
       })
     })
     it('should write a file containing input', () => {
-      assetLib.writeAssetLibrary(result, 'result.json', 'tmpl/')
+      fsInheritanceLib.writeAssetLibrary(result, 'result.json', 'tmpl/')
       expect(fs.existsSync('tmpl/result.json')).to.be.true
       var fileContents = JSON.parse(fs.readFileSync('tmpl/result.json', 'utf8'))
       expect(fileContents).eql(result)

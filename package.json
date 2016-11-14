@@ -1,19 +1,39 @@
 {
   "name": "fs-inheritance-lib",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "an inheritance library with fs and glob",
   "main": "index.js",
   "directories": {
-    "test": "test"
+    "test": "test",
+    "doc": "docs"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/.bin/mocha --reporter spec",
+    "lint": "./node_modules/.bin/standard src/**/*.js test/**/*.js",
+    "docs": "./node_modules/.bin/jsdoc2md src/*.js >> Docs.md"
   },
   "keywords": [
     "fs",
     "glob",
     "inheritance"
   ],
-  "author": "Huess Yil <huess@juicyarts.de> (http://www.juicyarts.de)",
-  "license": "ISC"
+  "author": "Huess Yil <huess@juicyarts.de> (https://github.com/juicyarts)",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "jsdoc-to-markdown": "^2.0.1",
+    "mocha": "^3.1.2",
+    "mock-fs": "^3.12.1",
+    "sinon": "^1.17.6",
+    "standard": "^8.5.0"
+  },
+  "standard": {
+    "env": {
+      "mocha": true,
+      "node": true
+    }
+  },
+  "dependencies": {
+    "glob": "^7.1.1"
+  }
 }

@@ -1,76 +1,53 @@
-import chai from 'chai'
-import sinonChai from 'sinon-chai'
-import chaiFs from 'chai-fs'
-import sinon from 'sinon'
-import path from 'path'
-import spies from 'chai-spies'
-import mockFs from 'mock-fs'
-import fs from 'fs'
+var chai = require('chai')
+var mockFs = require('mock-fs')
+var sinon = require('sinon')
 
-chai.use(chaiFs)
-chai.use(sinonChai)
-chai.use(spies)
+var expect = chai.expect
+var files, config, result
 
-let expect = chai.expect
-let files, config, result, paths
-
-import * as assetLib from '../../lib/common/assets'
-import * as logger from '../../lib/logger'
+var fsInheritanceLib = require('../src/fsInheritanceLib')
 
 describe('fsf - findSingleFile', () => {
-  beforeEach(() => {
-    logger.configure({
-      levels: [],
-      selectors: ['mocha', 'test']
-    })
-  })
   describe('if no file given', () => {
     before(() => {
       config = {
         inheritFrom: ['../parent', '../neighbour', '../../ancestor']
       }
-      logger.configure({
-        levels: ['error'],
-        selectors: ['mocha', 'test']
-      })
-      sinon.spy(logger, 'error')
+      sinon.spy(console, 'error')
     })
     it('should log Type error', () => {
-      assetLib.findSingleFile(config)
-      expect(logger.error.called).to.be.true
+      fsInheritanceLib.findSingleFile(config)
+      expect(console.error.called).to.be.true
     })
     after(() => {
-      logger.error.restore()
+      console.error.restore()
     })
   })
   describe('if file not available', () => {
     before(() => {
       config = {
         inheritFrom: ['../parent', '../neighbour', '../../ancestor'],
-        root: 'foo/bar/src'
+        root: 'foo/bar/src',
+        loglevel: ['warn']
       }
       files = [
         '/someotherfile.js'
       ]
-      logger.configure({
-        levels: ['warn'],
-        selectors: ['mocha', 'test']
-      })
       mockFs({
         'foo/bar/src/file.js': "console.log('child')"
       })
-      sinon.spy(logger, 'warn')
+      sinon.spy(console, 'warn')
     })
     it('should log File not Exisits', done => {
-      assetLib.findSingleFile(config, files[0])
-      expect(logger.warn.called).to.be.true
+      fsInheritanceLib.findSingleFile(config, files[0])
+      expect(console.warn.called).to.be.true
       for (var i = 0; i < config.inheritFrom; i++) {
-        expect(logger.warn.calledWith(files[0] + "file doesn't exist in:" + config.inheritFrom[i])).to.be.true
+        expect(console.warn.calledWith(files[0] + "file doesn't exist in:" + config.inheritFrom[i])).to.be.true
       }
       done()
     })
     after(() => {
-      logger.warn.restore()
+      console.warn.restore()
     })
     afterEach(() => {
       mockFs.restore()
@@ -80,7 +57,8 @@ describe('fsf - findSingleFile', () => {
     before(() => {
       config = {
         inheritFrom: [],
-        root: 'foo/bar/src'
+        root: 'foo/bar/src',
+        loglevel: ['warn']
       }
       files = [
         'someotherfile.js'
@@ -88,20 +66,15 @@ describe('fsf - findSingleFile', () => {
       mockFs({
         'foo/bar/src/file.js': "console.log('child')"
       })
-      logger.configure({
-        levels: ['warn'],
-        selectors: ['mocha', 'test']
-      })
-
-      sinon.spy(logger, 'warn')
+      sinon.spy(console, 'warn')
     })
 
     it('should log File not Exisits', () => {
-      assetLib.findSingleFile(config, files[0])
-      expect(logger.warn.called).to.be.true
+      fsInheritanceLib.findSingleFile(config, files[0])
+      expect(console.warn.called).to.be.true
     })
     after(() => {
-      logger.warn.restore()
+      console.warn.restore()
     })
   })
   describe('if local', () => {
@@ -126,7 +99,7 @@ describe('fsf - findSingleFile', () => {
     })
 
     it('should return origin & path local', () => {
-      expect(assetLib.findSingleFile(config, files[0])).eql(result)
+      expect(fsInheritanceLib.findSingleFile(config, files[0])).eql(result)
     })
   })
   describe('if neighbour', () => {
@@ -150,7 +123,7 @@ describe('fsf - findSingleFile', () => {
     })
 
     it('should return origin & path neighbour', () => {
-      expect(assetLib.findSingleFile(config, files[0])).eql(result)
+      expect(fsInheritanceLib.findSingleFile(config, files[0])).eql(result)
     })
   })
   describe('if parent', () => {
@@ -173,7 +146,7 @@ describe('fsf - findSingleFile', () => {
     })
 
     it('should return origin & path parent', () => {
-      expect(assetLib.findSingleFile(config, files[0])).eql(result)
+      expect(fsInheritanceLib.findSingleFile(config, files[0])).eql(result)
     })
   })
   describe('if ancestor', () => {
@@ -194,7 +167,7 @@ describe('fsf - findSingleFile', () => {
       })
     })
     it('should return origin & path ancestor', () => {
-      expect(assetLib.findSingleFile(config, files[0])).eql(result)
+      expect(fsInheritanceLib.findSingleFile(config, files[0])).eql(result)
     })
   })
   afterEach(() => {

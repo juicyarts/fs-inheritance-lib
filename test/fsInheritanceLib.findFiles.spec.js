@@ -1,34 +1,18 @@
-import chai from 'chai'
-import sinonChai from 'sinon-chai'
-import chaiFs from 'chai-fs'
-import sinon from 'sinon'
-import path from 'path'
-import spies from 'chai-spies'
-import mockFs from 'mock-fs'
-import fs from 'fs'
+var chai = require('chai')
+var mockFs = require('mock-fs')
 
-chai.use(chaiFs)
-chai.use(sinonChai)
-chai.use(spies)
+var expect = chai.expect
+var files, config, result
 
-let expect = chai.expect
-let files, config, result, paths
-
-import * as assetLib from '../../lib/common/assets'
-import * as logger from '../../lib/logger'
+var fsInheritanceLib = require('../src/fsInheritanceLib')
 
 describe('ff - findFiles', () => {
-  beforeEach(() => {
-    logger.configure({
-      levels: [],
-      selectors: ['mocha', 'test']
-    })
-  })
   describe('from everywhere', () => {
     before(() => {
       config = {
         inheritFrom: ['../parent', '../neighbour', '../../ancestor'],
-        root: 'foo/bar/src/'
+        root: 'foo/bar/src/',
+        loglevel: []
       }
       files = [
         'file1.js',
@@ -62,14 +46,15 @@ describe('ff - findFiles', () => {
       })
     })
     it('should return files from different origins with matching paths', () => {
-      expect(assetLib.findFiles(config, files)).eql(result)
+      expect(fsInheritanceLib.findFiles(config, files)).eql(result)
     })
   })
   describe('from everywhere via wildcard | single wildcard', function () {
     before(() => {
       config = {
         inheritFrom: ['../parent', '../neighbour', '../../ancestor'],
-        root: 'foo/bar/src'
+        root: 'foo/bar/src',
+        loglevel: []
       }
       files = [
         '**/*.js'
@@ -98,14 +83,15 @@ describe('ff - findFiles', () => {
       })
     })
     it('should return files from different origins with matching paths | from subfolders', () => {
-      expect(assetLib.findFiles(config, files)).eql(result)
+      expect(fsInheritanceLib.findFiles(config, files)).eql(result)
     })
   })
   describe('from everywhere via wildcard | multiple wildcards | subfolders in subfolders', function () {
     before(() => {
       config = {
         inheritFrom: ['../parent', '../neighbour', '../../ancestor'],
-        root: 'foo/bar/'
+        root: 'foo/bar/',
+        loglevel: []
       }
       files = [
         'src/**/*.js',
@@ -138,7 +124,7 @@ describe('ff - findFiles', () => {
       })
     })
     it('should return files from different origins with matching paths from subfolders and their subfolders', () => {
-      expect(assetLib.findFiles(config, files)).eql(result)
+      expect(fsInheritanceLib.findFiles(config, files)).eql(result)
     })
   })
   describe('from everywhere | removePatternFromFileName ', () => {
@@ -148,6 +134,7 @@ describe('ff - findFiles', () => {
         removeDuplicatesByFileName: true,
         removePatternFromFileName: /(\-\d)/,
         getFileByRegEx: false,
+        loglevel: [],
         files: [
           'deAT/bonus/1000x1000-0.gif',
           'deAT/bonus/1000x1000-1.gif',
@@ -180,7 +167,7 @@ describe('ff - findFiles', () => {
       })
     })
     it('should return paths with regex removed', () => {
-      expect(assetLib.findFiles(config, config.files)).eql(result)
+      expect(fsInheritanceLib.findFiles(config, config.files)).eql(result)
     })
   })
   describe('from everywhere via RegEx | removePatternFromFileName', () => {
@@ -190,6 +177,7 @@ describe('ff - findFiles', () => {
         removeDuplicatesByFileName: true,
         removePatternFromFileName: /(\-\d)/,
         getFileByRegEx: true,
+        loglevel: [],
         files: [/(\d){1,4}(x)(\d){1,4}(\-\d)?(\.).*/],
         outputPath: 'tmpl/ov',
         outputName: 'fbSizes.json'
@@ -212,7 +200,7 @@ describe('ff - findFiles', () => {
       })
     })
     it('should return paths with regex removed', () => {
-      expect(assetLib.findFiles(config, config.files)).eql(result)
+      expect(fsInheritanceLib.findFiles(config, config.files)).eql(result)
     })
   })
   describe('from everywhere via RegEx | removePatternFromFileName | removeDuplicatesByFileName', () => {
@@ -224,6 +212,7 @@ describe('ff - findFiles', () => {
         getFileByRegEx: true,
         files: [/(\d){1,4}(x)(\d){1,4}(\-\d)?(\.).*/],
         outputPath: 'tmpl/ov',
+        loglevel: [],
         outputName: 'fbSizes.json'
       }
       result = [
@@ -247,7 +236,7 @@ describe('ff - findFiles', () => {
       })
     })
     it('should return paths with regex removed', () => {
-      expect(assetLib.findFiles(config, config.files)).eql(result)
+      expect(fsInheritanceLib.findFiles(config, config.files)).eql(result)
     })
   })
   afterEach(() => {

@@ -1,29 +1,14 @@
-import chai from 'chai'
-import sinonChai from 'sinon-chai'
-import chaiFs from 'chai-fs'
-import sinon from 'sinon'
-import path from 'path'
-import spies from 'chai-spies'
-import mockFs from 'mock-fs'
-import fs from 'fs'
+var chai = require('chai')
+var path = require('path')
+var mockFs = require('mock-fs')
+var fs = require('fs')
 
-chai.use(chaiFs)
-chai.use(sinonChai)
-chai.use(spies)
+var expect = chai.expect
+var config, result
 
-let expect = chai.expect
-let files, config, result, paths
-
-import * as assetLib from '../../lib/common/assets'
-import * as logger from '../../lib/logger'
+var fsInheritanceLib = require('../src/fsInheritanceLib')
 
 describe('mkLib - make Library', () => {
-  beforeEach(() => {
-    logger.configure({
-      levels: [],
-      selectors: ['mocha', 'test']
-    })
-  })
   describe('mkLib - make Library', function () {
     before(() => {
       config = {
@@ -112,14 +97,14 @@ describe('mkLib - make Library', () => {
       })
     })
     it('should write a file containing input', () => {
-      assetLib.mkLib(config)
+      fsInheritanceLib.mkLib(config)
 
       expect(fs.existsSync(path.join(config.outputPath, config.outputName))).to.be.true
       var fileContents = JSON.parse(fs.readFileSync(path.join(config.outputPath, config.outputName), 'utf8'))
       expect(fileContents).eql(result)
     })
   })
-  xdescribe('mkLib - make Library | removeDuplicatesByFileName | removePatternFromFileName', function () {
+  describe('mkLib - make Library | removeDuplicatesByFileName | removePatternFromFileName', function () {
     before(() => {
       config = {
         root: 'static/gfx/fallback',
@@ -131,14 +116,8 @@ describe('mkLib - make Library', () => {
         outputName: 'fbSizes.json'
       }
       result = [
-        'static/gfx/fallback/deAT/bonus/1000x1000-0.gif',
-        'static/gfx/fallback/deAT/bonus/1000x1000-1.gif',
         'static/gfx/fallback/deAT/bonus/1000x1000.gif',
-        'static/gfx/fallback/deAT/bonus/300x250-0.gif',
-        'static/gfx/fallback/deAT/bonus/300x250-1.gif',
         'static/gfx/fallback/deAT/bonus/300x250.gif',
-        'static/gfx/fallback/deAT/bonus/50x50-0.gif',
-        'static/gfx/fallback/deAT/bonus/50x50-1.gif',
         'static/gfx/fallback/deAT/bonus/50x50.gif'
       ]
       mockFs({
@@ -155,7 +134,7 @@ describe('mkLib - make Library', () => {
       })
     })
     it('should write a file containing input', () => {
-      assetLib.mkLib(config)
+      fsInheritanceLib.mkLib(config)
 
       expect(fs.existsSync(path.join(config.outputPath, config.outputName))).to.be.true
       var fileContents = JSON.parse(fs.readFileSync(path.join(config.outputPath, config.outputName), 'utf8'))

@@ -1,29 +1,11 @@
-import chai from 'chai'
-import sinonChai from 'sinon-chai'
-import chaiFs from 'chai-fs'
-import sinon from 'sinon'
-import path from 'path'
-import spies from 'chai-spies'
-import mockFs from 'mock-fs'
-import fs from 'fs'
+var chai = require('chai')
+var mockFs = require('mock-fs')
 
-chai.use(chaiFs)
-chai.use(sinonChai)
-chai.use(spies)
+var expect = chai.expect
+var config, result, paths
 
-let expect = chai.expect
-let files, config, result, paths
-
-import * as assetLib from '../../lib/common/assets'
-import * as logger from '../../lib/logger'
-
+var fsInheritanceLib = require('../src/fsInheritanceLib')
 describe('fp - findPaths', () => {
-  beforeEach(() => {
-    logger.configure({
-      levels: [],
-      selectors: ['mocha', 'test']
-    })
-  })
   describe('from everywhere', () => {
     before(() => {
       config = {
@@ -47,7 +29,7 @@ describe('fp - findPaths', () => {
         '../../ancestor/foo/bar/src/mixins',
         '../../ancestor/foo/bar/src/module',
         '../parent/foo/bar/src/additional',
-        '../neighbour/foo/bar/src/additional',
+        '../neighbour/foo/bar/src/additional'
       ]
       mockFs({
         '../../ancestor/foo/bar/src/client-vars': {},
@@ -62,7 +44,7 @@ describe('fp - findPaths', () => {
       })
     })
     it('should return paths from different origins', () => {
-      expect(assetLib.findPaths(config, paths)).eql(result)
+      expect(fsInheritanceLib.findPaths(config, paths)).eql(result)
     })
   })
   describe('from everywhere via wildcard', () => {
@@ -72,7 +54,7 @@ describe('fp - findPaths', () => {
         root: 'foo/bar/src/'
       }
       paths = [
-        '**/*',
+        '**/*'
       ]
       result = [
         '../parent/foo/bar/src/additional',
@@ -98,7 +80,7 @@ describe('fp - findPaths', () => {
       })
     })
     it('should return paths from different origins', () => {
-      expect(assetLib.findPaths(config, paths)).eql(result)
+      expect(fsInheritanceLib.findPaths(config, paths)).eql(result)
     })
   })
   afterEach(() => {

@@ -1,34 +1,18 @@
-import chai from 'chai'
-import sinonChai from 'sinon-chai'
-import chaiFs from 'chai-fs'
-import sinon from 'sinon'
-import path from 'path'
-import spies from 'chai-spies'
-import mockFs from 'mock-fs'
-import fs from 'fs'
+var chai = require('chai')
+var mockFs = require('mock-fs')
 
-chai.use(chaiFs)
-chai.use(sinonChai)
-chai.use(spies)
+var expect = chai.expect
+var files, config, result
 
-let expect = chai.expect
-let files, config, result, paths
-
-import * as assetLib from '../../lib/common/assets'
-import * as logger from '../../lib/logger'
+var fsInheritanceLib = require('../src/fsInheritanceLib')
 
 describe('fgp - findGlobalPaths', () => {
-  beforeEach(() => {
-    logger.configure({
-      levels: [],
-      selectors: ['mocha', 'test']
-    })
-  })
   describe('fgp findGlobalPatterns | deep wildcard', function () {
     before(() => {
       config = {
         inheritFrom: ['../parent', '../neighbour', '../../ancestor'],
-        root: 'foo/bar/src'
+        root: 'foo/bar/src',
+        loglevel: []
       }
       files = [
         '**/*.js'
@@ -58,14 +42,15 @@ describe('fgp - findGlobalPaths', () => {
     })
 
     it('should return array of files without doubles | deep', () => {
-      expect(assetLib.findGlobPatterns(config, files[0])).eql(result)
+      expect(fsInheritanceLib.findGlobPatterns(config, files[0])).eql(result)
     })
   })
   describe('fgp findGlobalPatterns | flat wildcard', function () {
     before(() => {
       config = {
         inheritFrom: ['../parent', '../neighbour', '../../ancestor'],
-        root: 'foo/bar/src'
+        root: 'foo/bar/src',
+        loglevel: []
       }
       files = [
         '*.js'
@@ -94,7 +79,7 @@ describe('fgp - findGlobalPaths', () => {
     })
 
     it('should return array of files without doubles | flat', () => {
-      expect(assetLib.findGlobPatterns(config, files[0])).eql(result)
+      expect(fsInheritanceLib.findGlobPatterns(config, files[0])).eql(result)
     })
   })
   afterEach(() => {
