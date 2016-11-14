@@ -88,8 +88,8 @@ function findSingleFile (cfg, file) {
 /**
  * This Function returns an array of matching paths for one given pattern
  * @example
- * var fsIn = require('fs-inheritance-lib')
- * cfg = {
+var fsIn = require('fs-inheritance-lib')
+cfg = {
   inheritFrom: ['../parent', '../neighbour', '../../ancestor'],
   root: 'foo/bar/baz'
 }
@@ -138,7 +138,7 @@ function findSinglePath (cfg, fpath) {
  * @returns {Array} of files found by given patterns
  *
  * @example
- * var fsIn = require('fs-inheritance-lib')
+var fsIn = require('fs-inheritance-lib')
 config = {
   inheritFrom: ['../parent', '../neighbour', '../../ancestor'],
   root: 'foo/bar/src/'
@@ -200,7 +200,7 @@ function findFiles (cfg, files) {
  * the folders to be searched in.
  * First appearance in first inheritance is taken
  * @example
- * var fsIn = require('fs-inheritance-lib')
+var fsIn = require('fs-inheritance-lib')
 config = {
   inheritFrom: ['../parent', '../neighbour', '../../ancestor'],
   root: 'foo/bar/src/'
@@ -246,8 +246,8 @@ function findPaths (cfg, paths) {
 /**
  * find patterns that include * wildcards
  * @example
- * var fsIn = require('fs-inheritance-lib')
- * config = {
+var fsIn = require('fs-inheritance-lib')
+config = {
     inheritFrom: ['../parent', '../neighbour', '../../ancestor'],
     root: 'foo/bar/src',
     loglevel: []
