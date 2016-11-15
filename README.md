@@ -1,4 +1,4 @@
-# fs-inheritance-lib [![Build Status](https://travis-ci.org/juicyarts/fs-inheritance-lib.svg?branch=master)](https://travis-ci.org/juicyarts/fs-inheritance-lib) [![Standard - JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
+# (WIP) fs-inheritance-lib [![Build Status](https://travis-ci.org/juicyarts/fs-inheritance-lib.svg?branch=master)](https://travis-ci.org/juicyarts/fs-inheritance-lib) [![Standard - JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 .. is a module i built to manage dependencies in complex projects where files can be spread over different folders.
 
 ## Whats the purpose
