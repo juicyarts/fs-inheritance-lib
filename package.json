@@ -8,17 +8,17 @@
     "doc": "docs"
   },
   "scripts": {
-    "test": "./node_modules/.bin/mocha --reporter spec",
+    "test": "node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
     "lint": "./node_modules/.bin/standard src/**/*.js test/**/*.js",
     "docs": "rm docs/api.md && ./node_modules/.bin/jsdoc2md src/*.js >> docs/api.md",
-    "build": "npm run lint && npm run test && npm run docs"
+    "build": "npm run docs"
   },
   "keywords": [
     "fs",
     "glob",
     "inheritance"
   ],
-   "repository": {
+  "repository": {
     "type": "git",
     "url": "https://github.com/juicyarts/fs-inheritance-lib"
   },
@@ -26,11 +26,17 @@
     "url": "https://github.com/juicyarts/fs-inheritance-lib/issues"
   },
   "author": "Huess Yil <huess@juicyarts.de> (https://github.com/juicyarts)",
-  "license": {"tpye":"MIT", "url":""},
+  "license": {
+    "tpye": "MIT",
+    "url": ""
+  },
   "devDependencies": {
     "chai": "^3.5.0",
+    "coveralls": "^2.11.15",
+    "istanbul": "^0.4.5",
     "jsdoc-to-markdown": "^2.0.1",
     "mocha": "^3.1.2",
+    "mocha-lcov-reporter": "^1.2.0",
     "mock-fs": "^3.12.1",
     "sinon": "^1.17.6",
     "standard": "^8.5.0"
