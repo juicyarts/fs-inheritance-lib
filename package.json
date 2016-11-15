@@ -10,7 +10,8 @@
   "scripts": {
     "test": "./node_modules/.bin/mocha --reporter spec",
     "lint": "./node_modules/.bin/standard src/**/*.js test/**/*.js",
-    "docs": "./node_modules/.bin/jsdoc2md src/*.js >> Docs.md"
+    "docs": "rm docs/api.md && ./node_modules/.bin/jsdoc2md src/*.js >> docs/api.md",
+    "build": "npm run lint && npm run test && npm run docs"
   },
   "keywords": [
     "fs",
