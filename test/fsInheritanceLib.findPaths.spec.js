@@ -9,7 +9,7 @@ describe('fp - findPaths', () => {
   describe('from everywhere', () => {
     before(() => {
       config = {
-        inheritFrom: ['../parent', '../neighbour', '../../ancestor'],
+        inheritFrom: ['./', '../parent', '../neighbour', '../../ancestor'],
         root: 'foo/bar/src/'
       }
       paths = [
@@ -50,7 +50,7 @@ describe('fp - findPaths', () => {
   describe('from everywhere via wildcard', () => {
     before(() => {
       config = {
-        inheritFrom: ['../parent', '../neighbour', '../../ancestor'],
+        inheritFrom: ['./', '../parent', '../neighbour', '../../ancestor'],
         root: 'foo/bar/src/'
       }
       paths = [

@@ -49,34 +49,14 @@ console.log(result)
 // }
  */
 function findSingleFile (cfg, file) {
-  try {
-    var result = {}
-    if (!cfg.inheritFrom || cfg.inheritFrom.length <= 0) {
-      cfg.inheritFrom = ['./']
-    } else {
-      if (cfg.inheritFrom.indexOf('./') < 0) {
-        cfg.inheritFrom.unshift('./')
-      }
+  if (!cfg.inheritFrom || cfg.inheritFrom.length <= 0) throw new ReferenceError('No paths given to inherit from given')
+  for (var i = 0; i < cfg.inheritFrom.length; i++) {
+    var src = path.join(cfg.inheritFrom[i], cfg.root, file)
+    if (!fs.existsSync(src)) {
+      log(cfg, 'warn', file, 'doesnt exist in', cfg.root, 'of', cfg.inheritFrom[i])
+      continue
     }
-    for (var i = 0; i < cfg.inheritFrom.length; i++) {
-      var src = path.join(cfg.inheritFrom[i], cfg.root, file)
-      if (fs.existsSync(src)) {
-        result = {
-          origin: cfg.inheritFrom[i] === './' ? 'local' : cfg.inheritFrom[i].replace(/^(((\.){1,2}\/){1,})/, ''),
-          path: src
-        }
-        if (cfg.loglevel && cfg.loglevel.indexOf('info') > -1) {
-          console.info(path.join(cfg.root, file) + ' found in: ' + cfg.inheritFrom[i])
-        }
-        return result
-      } else {
-        if (cfg.loglevel && cfg.loglevel.indexOf('warn') > -1) {
-          console.warn(path.join(cfg.root, file) + " doesn't exist in: " + cfg.inheritFrom[i])
-        }
-      }
-    }
-  } catch (err) {
-    console.error(err)
+    return src
   }
 }
 
@@ -102,25 +82,17 @@ console.log(result)
 // ]
  */
 function findSinglePath (cfg, fpath) {
-  try {
-    var results = []
-    for (var i = 0; i < cfg.inheritFrom.length; i++) {
-      var src = path.join(cfg.inheritFrom[i], cfg.root ? cfg.root : '', fpath)
-      if (fs.existsSync(src)) {
-        if (cfg.loglevel && cfg.loglevel.indexOf('info') > -1) {
-          console.info(path.join(cfg.root ? cfg.root : '', fpath) + ' found in: ' + cfg.inheritFrom[i])
-        }
-        results.push(src)
-      } else {
-        if (cfg.loglevel && cfg.loglevel.indexOf('warn') > -1) {
-          console.warn(path.join(cfg.root ? cfg.root : '', fpath) + " doesn't exist in: " + cfg.inheritFrom[i])
-        }
-      }
+  if (!cfg.inheritFrom || cfg.inheritFrom.length <= 0) throw new ReferenceError('No paths given to inherit from given')
+  var results = []
+  for (var i = 0; i < cfg.inheritFrom.length; i++) {
+    var src = path.join(cfg.inheritFrom[i], cfg.root ? cfg.root : '', fpath)
+    if (!fs.existsSync(src)) {
+      log(cfg, 'warn', fpath + ' doesnt exist in: ' + cfg.root + 'of' + cfg.inheritFrom[i])
+      continue
     }
-    return results
-  } catch (err) {
-    console.error(err)
+    results.push(src)
   }
+  return results
 }
 
 /**
@@ -162,31 +134,23 @@ console.log(result)
 function findFiles (cfg, files) {
   var file = false
   var result = []
+  var pat
   for (var f = 0; f < files.length; f++) {
     if (cfg.getFileByRegEx || files[f].match(/\*/)) {
-      var pat = findGlobPatterns(cfg, files[f])
-      if (result.length === 0) {
-        result = pat
-      } else {
-        result = result.concat(pat)
-      }
-    } else {
-      if (cfg.removePatternFromFileName !== undefined && findSingleFile(cfg, files[f]).path.match(cfg.removePatternFromFileName)) {
-        file = findSingleFile(cfg, files[f]) ? findSingleFile(cfg, files[f]).path.replace(cfg.removePatternFromFileName, '') : false
-      } else {
-        file = findSingleFile(cfg, files[f]) ? findSingleFile(cfg, files[f]).path : false
-      }
-      if (file) {
-        if (cfg.removePath) {
-          file = file.split('/').pop()
-        }
-        result.push(file)
-      }
+      pat = findGlobPatterns(cfg, files[f])
+      result = result.concat(pat)
+      continue
     }
+    file = findSingleFile(cfg, files[f])
+    if (cfg.removePatternFromFileName) {
+      file = file.replace(cfg.removePatternFromFileName, '')
+    }
+    if (cfg.removePath) {
+      file = file.split('/').pop()
+    }
+    result.push(file)
   }
-
-  result = removeDuplicates(result)
-  return result
+  return removeDuplicates(result)
 }
 
 /**
@@ -268,15 +232,8 @@ console.log(result)
  */
 function findGlobPatterns (cfg, pat) {
   var result = []
-  var pattern
+  var pattern, file
   var re = new RegExp('(.+?)?(' + cfg.root + ')(/)?')
-  if (!cfg.inheritFrom || cfg.inheritFrom.length <= 0) {
-    cfg.inheritFrom = ['./']
-  } else {
-    if (cfg.inheritFrom.indexOf('./') < 0) {
-      cfg.inheritFrom.unshift('./')
-    }
-  }
 
   for (var i = 0; i < cfg.inheritFrom.length; i++) {
     if (cfg.getFileByRegEx) {
@@ -287,12 +244,9 @@ function findGlobPatterns (cfg, pat) {
     }
 
     for (var p = 0; p < pattern.length; p++) {
-      var file = pattern[p].replace(re, '')
-      if (findSingleFile(cfg, file).path.match(cfg.removePatternFromFileName)) {
-        file = findSingleFile(cfg, file).path.replace(cfg.removePatternFromFileName, '')
-      } else {
-        file = findSingleFile(cfg, file).path
-      }
+      file = pattern[p].replace(re, '')
+      file = findSingleFile(cfg, file).replace(cfg.removePatternFromFileName, '')
+
       if (cfg.removePath) {
         file = file.split('/').pop()
       }
@@ -337,8 +291,7 @@ console.log(result)
  */
 function findGlobPath (cfg, pat) {
   var results = []
-  var result
-  var pattern
+  var result, pattern
   for (var i = 0; i < cfg.inheritFrom.length; i++) {
     pattern = glob.sync(path.join(cfg.inheritFrom[i], cfg.root, pat))
     for (var p = 0; p < pattern.length; p++) {
@@ -361,6 +314,7 @@ console.log(result)
 // ['foo', 'bar', 'baz']
  */
 function removeDuplicates (arr) {
+  if (arr.length <= 1) return arr
   var set = new Set(arr)
   var values = set.values()
   return Array.from(values)
@@ -404,7 +358,7 @@ function writeAssetLibrary (input, name, dest) {
   try {
     fs.writeFileSync(path.join(dest, name), lib)
   } catch (err) {
-    console.error(err)
+    log(cfg, 'error', err)
   }
 }
 
@@ -413,8 +367,8 @@ function writeAssetLibrary (input, name, dest) {
  * Make Library collects files or paths and writes a file
  * it can also have a callback function which returns the data found
  *
- * @param  {Object}   cfg config
- * @param  {Function} cb  takes optional callback function
+ * @param {Object} cfg config
+ * @param {Function} cb  takes optional callback function
  * @return {Object|Array|Function}
  * @example
  var config = {
@@ -432,7 +386,22 @@ fsInheritanceLib.writeAssetLibrary(config, function(result){
 function mkLib (cfg, cb) {
   var result = findFiles(cfg, cfg.files)
   writeAssetLibrary(result, cfg.outputName, cfg.outputPath)
-  if (cb) {
-    cb(result)
+  if (cb) return cb(result)
+}
+
+/**
+ * @description
+ * small logging utility
+ * @param {Object} cfg module config
+ * @param {String} type log type
+ * @param {String} msg message to be displayed
+ * @example
+ * var config = {loglevel:['error', 'info', 'warn']}
+ * fsInheritanceLib.log(config, 'info', 'heythere')
+ * // logs info heythere
+ */
+function log (cfg, type, msg) {
+  if (cfg.loglevel && cfg.loglevel.indexOf(type) > -1) {
+    console[type](msg)
   }
 }

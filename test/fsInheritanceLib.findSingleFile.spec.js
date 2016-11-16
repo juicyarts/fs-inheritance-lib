@@ -11,22 +11,17 @@ describe('fsf - findSingleFile', () => {
   describe('if no file given', () => {
     before(() => {
       config = {
-        inheritFrom: ['../parent', '../neighbour', '../../ancestor']
+        inheritFrom: ['./', '../parent', '../neighbour', '../../ancestor']
       }
-      sinon.spy(console, 'error')
     })
-    it('should log Type error', () => {
-      fsInheritanceLib.findSingleFile(config)
-      expect(console.error.called).to.be.true
-    })
-    after(() => {
-      console.error.restore()
+    it('should throw Type error', () => {
+      expect(function () {fsInheritanceLib.findSingleFile(config)}).to.throw(TypeError)
     })
   })
   describe('if file not available', () => {
     before(() => {
       config = {
-        inheritFrom: ['../parent', '../neighbour', '../../ancestor'],
+        inheritFrom: ['./', '../parent', '../neighbour', '../../ancestor'],
         root: 'foo/bar/src',
         loglevel: ['warn']
       }
@@ -57,8 +52,7 @@ describe('fsf - findSingleFile', () => {
     before(() => {
       config = {
         inheritFrom: [],
-        root: 'foo/bar/src',
-        loglevel: ['warn']
+        root: 'foo/bar/src'
       }
       files = [
         'someotherfile.js'
@@ -66,30 +60,22 @@ describe('fsf - findSingleFile', () => {
       mockFs({
         'foo/bar/src/file.js': "console.log('child')"
       })
-      sinon.spy(console, 'warn')
     })
 
-    it('should log File not Exisits', () => {
-      fsInheritanceLib.findSingleFile(config, files[0])
-      expect(console.warn.called).to.be.true
-    })
-    after(() => {
-      console.warn.restore()
+    it('should log no inheritance', () => {
+      expect(function () {fsInheritanceLib.findSingleFile(config, files[0])}).to.throw(ReferenceError)
     })
   })
   describe('if local', () => {
     before(() => {
       config = {
-        inheritFrom: ['../parent', '../neighbour', '../../ancestor'],
+        inheritFrom: ['./', '../parent', '../neighbour', '../../ancestor'],
         root: 'foo/bar/src'
       }
       files = [
         'file.js'
       ]
-      result = {
-        origin: 'local',
-        path: 'foo/bar/src/file.js'
-      }
+      result = 'foo/bar/src/file.js'
       mockFs({
         '../../ancestor/foo/bar/src/file.js': "console.log('ancestor')",
         '../parent/foo/bar/src/file.js': "console.log('parent')",
@@ -111,10 +97,8 @@ describe('fsf - findSingleFile', () => {
       files = [
         'file.js'
       ]
-      result = {
-        origin: 'neighbour',
-        path: '../neighbour/foo/bar/src/file.js'
-      }
+      result = '../neighbour/foo/bar/src/file.js'
+
       mockFs({
         '../../ancestor/foo/bar/src/file.js': "console.log('ancestor')",
         '../parent/foo/bar/src/file.js': "console.log('parent')",
@@ -135,10 +119,7 @@ describe('fsf - findSingleFile', () => {
       files = [
         'file.js'
       ]
-      result = {
-        origin: 'parent',
-        path: '../parent/foo/bar/src/file.js'
-      }
+      result = '../parent/foo/bar/src/file.js'
       mockFs({
         '../../ancestor/foo/bar/src/file.js': "console.log('ancestor')",
         '../parent/foo/bar/src/file.js': "console.log('parent')"
@@ -158,10 +139,7 @@ describe('fsf - findSingleFile', () => {
       files = [
         '/file.js'
       ]
-      result = {
-        origin: 'ancestor',
-        path: '../../ancestor/foo/bar/src/file.js'
-      }
+      result = '../../ancestor/foo/bar/src/file.js'
       mockFs({
         '../../ancestor/foo/bar/src/file.js': "console.log('ancestor')"
       })

@@ -10,7 +10,7 @@ describe('ff - findFiles', () => {
   describe('from everywhere', () => {
     before(() => {
       config = {
-        inheritFrom: ['../parent', '../neighbour', '../../ancestor'],
+        inheritFrom: ['./', '../parent', '../neighbour', '../../ancestor'],
         root: 'foo/bar/src/',
         loglevel: []
       }
@@ -52,7 +52,7 @@ describe('ff - findFiles', () => {
   describe('from everywhere via wildcard | single wildcard', function () {
     before(() => {
       config = {
-        inheritFrom: ['../parent', '../neighbour', '../../ancestor'],
+        inheritFrom: ['./', '../parent', '../neighbour', '../../ancestor'],
         root: 'foo/bar/src',
         loglevel: []
       }
@@ -89,7 +89,7 @@ describe('ff - findFiles', () => {
   describe('from everywhere via wildcard | multiple wildcards | subfolders in subfolders', function () {
     before(() => {
       config = {
-        inheritFrom: ['../parent', '../neighbour', '../../ancestor'],
+        inheritFrom: ['./', '../parent', '../neighbour', '../../ancestor'],
         root: 'foo/bar/',
         loglevel: []
       }
@@ -131,6 +131,7 @@ describe('ff - findFiles', () => {
     beforeEach(() => {
       config = {
         root: 'static/gfx/fallback',
+        inheritFrom: ['./'],
         removeDuplicatesByFileName: true,
         removePatternFromFileName: /(\-\d)/,
         getFileByRegEx: false,
@@ -174,6 +175,7 @@ describe('ff - findFiles', () => {
     beforeEach(() => {
       config = {
         root: 'static/gfx/fallback',
+        inheritFrom: ['./'],
         removeDuplicatesByFileName: true,
         removePatternFromFileName: /(\-\d)/,
         getFileByRegEx: true,
@@ -208,6 +210,7 @@ describe('ff - findFiles', () => {
       config = {
         root: 'static/gfx/fallback',
         removePath: true,
+        inheritFrom: ['./'],
         removePatternFromFileName: /(\-\d)/,
         getFileByRegEx: true,
         files: [/(\d){1,4}(x)(\d){1,4}(\-\d)?(\.).*/],

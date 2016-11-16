@@ -12,7 +12,8 @@
     "lint": "./node_modules/.bin/standard src/**/*.js test/**/*.js",
     "docs": "rm docs/api.md && ./node_modules/.bin/jsdoc2md src/*.js >> docs/api.md",
     "minify": "./node_modules/.bin/uglifyjs src/fsInheritanceLib.js  -o dist/fsInheritanceLib.min.js -c -m --source-map dist/fsInheritanceLib.min.js.map",
-    "build": "npm run minify && npm run docs"
+    "build": "npm run minify && npm run docs",
+    "coverage": "set CODECLIMATE_REPO_TOKEN=f06146c07c4c3100bb0cedd256e9202a6bc8d91ad53741f3dd6bc09f60d36273 codeclimate-test-reporter < ./coverage/lcov.info"
   },
   "keywords": [
     "fs",

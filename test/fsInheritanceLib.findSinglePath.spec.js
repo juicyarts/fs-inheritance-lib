@@ -11,22 +11,17 @@ describe('fsp - findSinglePath', () => {
   describe('if path is not given', () => {
     beforeEach(() => {
       config = {
-        inheritFrom: ['../parent', '../neighbour', '../../ancestor']
+        inheritFrom: ['./', '../parent', '../neighbour', '../../ancestor']
       }
-      sinon.spy(console, 'error')
     })
-    it('should return empty array and call error', () => {
-      expect(fsInheritanceLib.findSinglePath(config)).eql(result)
-      expect(console.error.called).to.be.true
-    })
-    afterEach(() => {
-      console.error.restore()
+    it('should throw a Type error', () => {
+      expect(function () {fsInheritanceLib.findSinglePath(config)}).to.throw(TypeError)
     })
   })
   describe('if Path is not available', () => {
     beforeEach(() => {
       config = {
-        inheritFrom: ['../parent', '../neighbour', '../../ancestor'],
+        inheritFrom: ['./', '../parent', '../neighbour', '../../ancestor'],
         root: 'foo/bar/baz',
         loglevel: ['warn']
       }
@@ -47,7 +42,7 @@ describe('fsp - findSinglePath', () => {
   describe('if Path is available in parent only', () => {
     beforeEach(() => {
       config = {
-        inheritFrom: ['../parent', '../neighbour', '../../ancestor'],
+        inheritFrom: ['./', '../parent', '../neighbour', '../../ancestor'],
         root: 'foo/bar/baz',
         loglevel: ['warn']
       }
@@ -71,7 +66,7 @@ describe('fsp - findSinglePath', () => {
   describe('if Path is available in parent and neighbour only', () => {
     beforeEach(() => {
       config = {
-        inheritFrom: ['../parent', '../neighbour', '../../ancestor'],
+        inheritFrom: ['./', '../parent', '../neighbour', '../../ancestor'],
         root: 'foo/bar/baz'
       }
       paths = ['client-vars']
@@ -91,7 +86,7 @@ describe('fsp - findSinglePath', () => {
   describe('if Path is available in parent, neighbour and ancestor', () => {
     beforeEach(() => {
       config = {
-        inheritFrom: ['../parent', '../neighbour', '../../ancestor'],
+        inheritFrom: ['./', '../parent', '../neighbour', '../../ancestor'],
         root: 'foo/bar/baz'
       }
       paths = ['client-vars']

@@ -13,6 +13,7 @@ describe('mkLib - make Library', () => {
     before(() => {
       config = {
         root: 'static/gfx/fallback',
+        inheritFrom: ['./'],
         getFileByRegEx: true,
         files: [/(\d){1,4}(x)(\d){1,4}(\-\d)?(\.).*/],
         outputPath: 'tmpl/ov',
@@ -108,6 +109,7 @@ describe('mkLib - make Library', () => {
     before(() => {
       config = {
         root: 'static/gfx/fallback',
+        inheritFrom: ['./'],
         removeDuplicatesByFileName: true,
         removePatternFromFileName: /(\-\d)/,
         getFileByRegEx: true,

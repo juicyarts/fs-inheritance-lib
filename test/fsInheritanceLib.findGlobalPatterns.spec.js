@@ -10,7 +10,7 @@ describe('fgp - findGlobalPaths', () => {
   describe('fgp findGlobalPatterns | deep wildcard', function () {
     before(() => {
       config = {
-        inheritFrom: ['../parent', '../neighbour', '../../ancestor'],
+        inheritFrom: ['./', '../parent', '../neighbour', '../../ancestor'],
         root: 'foo/bar/src',
         loglevel: []
       }
@@ -48,7 +48,7 @@ describe('fgp - findGlobalPaths', () => {
   describe('fgp findGlobalPatterns | flat wildcard', function () {
     before(() => {
       config = {
-        inheritFrom: ['../parent', '../neighbour', '../../ancestor'],
+        inheritFrom: ['./', '../parent', '../neighbour', '../../ancestor'],
         root: 'foo/bar/src',
         loglevel: []
       }
