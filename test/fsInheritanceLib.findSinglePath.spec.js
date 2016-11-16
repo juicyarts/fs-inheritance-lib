@@ -15,7 +15,9 @@ describe('fsp - findSinglePath', () => {
       }
     })
     it('should throw a Type error', () => {
-      expect(function () {fsInheritanceLib.findSinglePath(config)}).to.throw(TypeError)
+      expect(function () {
+        fsInheritanceLib.findSinglePath(config)
+      }).to.throw(TypeError)
     })
   })
   describe('if Path is not available', () => {

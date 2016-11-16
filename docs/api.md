@@ -17,6 +17,7 @@ You can Also pass Inheritance paths to find a file.
     * [~filterRegex(arr, regex)](#module_fsInheritanceLib..filterRegex) ⇒ <code>Array</code>
     * [~writeAssetLibrary(input, name, dest)](#module_fsInheritanceLib..writeAssetLibrary)
     * [~mkLib(cfg, cb)](#module_fsInheritanceLib..mkLib) ⇒ <code>Object</code> &#124; <code>Array</code> &#124; <code>function</code>
+    * [~log(cfg, type, msg)](#module_fsInheritanceLib..log)
 
 <a name="module_fsInheritanceLib..findSingleFile"></a>
 
@@ -331,4 +332,23 @@ fsInheritanceLib.writeAssetLibrary(config, function(result){
   // ['./foo/bar/baz/foo.js', './foo/bar/baz/bar.js', './foo/bar/baz/baz.js']
   // and a file bar/foo/baz.json is created (if the path exists!)
 })
+```
+<a name="module_fsInheritanceLib..log"></a>
+
+### fsInheritanceLib~log(cfg, type, msg)
+small logging utility
+
+**Kind**: inner method of <code>[fsInheritanceLib](#module_fsInheritanceLib)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| cfg | <code>Object</code> | module config |
+| type | <code>String</code> | log type |
+| msg | <code>String</code> | message to be displayed |
+
+**Example**  
+```js
+var config = {loglevel:['error', 'info', 'warn']}
+fsInheritanceLib.log(config, 'info', 'heythere')
+// logs info heythere
 ```

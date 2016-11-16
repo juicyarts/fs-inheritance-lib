@@ -358,7 +358,7 @@ function writeAssetLibrary (input, name, dest) {
   try {
     fs.writeFileSync(path.join(dest, name), lib)
   } catch (err) {
-    log(cfg, 'error', err)
+    log(false, 'error', err)
   }
 }
 

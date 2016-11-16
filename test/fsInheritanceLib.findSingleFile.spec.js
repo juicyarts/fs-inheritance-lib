@@ -15,7 +15,9 @@ describe('fsf - findSingleFile', () => {
       }
     })
     it('should throw Type error', () => {
-      expect(function () {fsInheritanceLib.findSingleFile(config)}).to.throw(TypeError)
+      expect(() => {
+        fsInheritanceLib.findSingleFile(config)
+      }).to.throw(TypeError)
     })
   })
   describe('if file not available', () => {
@@ -63,7 +65,9 @@ describe('fsf - findSingleFile', () => {
     })
 
     it('should log no inheritance', () => {
-      expect(function () {fsInheritanceLib.findSingleFile(config, files[0])}).to.throw(ReferenceError)
+      expect(() => {
+        fsInheritanceLib.findSingleFile(config, files[0])
+      }).to.throw(ReferenceError)
     })
   })
   describe('if local', () => {
@@ -85,7 +89,9 @@ describe('fsf - findSingleFile', () => {
     })
 
     it('should return origin & path local', () => {
-      expect(fsInheritanceLib.findSingleFile(config, files[0])).eql(result)
+      expect(() => {
+        fsInheritanceLib.findSingleFile(config, files[0])
+      }).eql(result)
     })
   })
   describe('if neighbour', () => {
@@ -107,7 +113,9 @@ describe('fsf - findSingleFile', () => {
     })
 
     it('should return origin & path neighbour', () => {
-      expect(fsInheritanceLib.findSingleFile(config, files[0])).eql(result)
+      expect(() => {
+        fsInheritanceLib.findSingleFile(config, files[0])
+      }).eql(result)
     })
   })
   describe('if parent', () => {
@@ -127,7 +135,9 @@ describe('fsf - findSingleFile', () => {
     })
 
     it('should return origin & path parent', () => {
-      expect(fsInheritanceLib.findSingleFile(config, files[0])).eql(result)
+      expect(() => {
+        fsInheritanceLib.findSingleFile(config, files[0])
+      }).eql(result)
     })
   })
   describe('if ancestor', () => {
@@ -145,7 +155,9 @@ describe('fsf - findSingleFile', () => {
       })
     })
     it('should return origin & path ancestor', () => {
-      expect(fsInheritanceLib.findSingleFile(config, files[0])).eql(result)
+      expect(() => {
+        fsInheritanceLib.findSingleFile(config, files[0])
+      }).eql(result)
     })
   })
   afterEach(() => {
