@@ -89,9 +89,7 @@ describe('fsf - findSingleFile', () => {
     })
 
     it('should return origin & path local', () => {
-      expect(() => {
-        fsInheritanceLib.findSingleFile(config, files[0])
-      }).eql(result)
+      expect(fsInheritanceLib.findSingleFile(config, files[0])).eql(result)
     })
   })
   describe('if neighbour', () => {
@@ -113,9 +111,7 @@ describe('fsf - findSingleFile', () => {
     })
 
     it('should return origin & path neighbour', () => {
-      expect(() => {
-        fsInheritanceLib.findSingleFile(config, files[0])
-      }).eql(result)
+      expect(fsInheritanceLib.findSingleFile(config, files[0])).eql(result)
     })
   })
   describe('if parent', () => {
@@ -135,9 +131,7 @@ describe('fsf - findSingleFile', () => {
     })
 
     it('should return origin & path parent', () => {
-      expect(() => {
-        fsInheritanceLib.findSingleFile(config, files[0])
-      }).eql(result)
+      expect(fsInheritanceLib.findSingleFile(config, files[0])).eql(result)
     })
   })
   describe('if ancestor', () => {
@@ -155,9 +149,7 @@ describe('fsf - findSingleFile', () => {
       })
     })
     it('should return origin & path ancestor', () => {
-      expect(() => {
-        fsInheritanceLib.findSingleFile(config, files[0])
-      }).eql(result)
+      expect(fsInheritanceLib.findSingleFile(config, files[0])).eql(result)
     })
   })
   afterEach(() => {
